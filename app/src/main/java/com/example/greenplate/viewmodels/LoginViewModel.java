@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.example.greenplate.BR;
 import com.example.greenplate.model.User;
 
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginViewModel extends BaseObservable {
     private User user;
@@ -60,7 +59,18 @@ public class LoginViewModel extends BaseObservable {
     }
 
     public boolean isInputDataValid() {
-        return !TextUtils.isEmpty(getUserUsername()) && Patterns.EMAIL_ADDRESS.matcher(getUserUsername()).matches() && getUserPassword().length() > 5; //add more to this logic
+        String username = getUserUsername();
+        String password = getUserPassword();
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+            return false;
+        }
+
+        if (TextUtils.isEmpty(username.trim()) || TextUtils.isEmpty(password.trim())) {
+            return false;
+        }
+
+        return password.length() >= 5;
     }
 
 }
