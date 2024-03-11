@@ -5,30 +5,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class PersonalInfoModel {
-    private double height;
-    private double weight;
+    private String height;
+    private String weight;
     private String gender;
-    public PersonalInfoModel(double height, double weight, String gender) {
+    public PersonalInfoModel(String height, String weight, String gender) {
         this.height = height;
         this.weight = weight;
         this.gender = gender;
     }
 
-    public double getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public double getWeight() {
+    public String getWeight() {
         return weight;
     }
 
     public String getGender() { return gender; }
 
-    public void setHeight(double height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
     public void setGender(String gender) {
