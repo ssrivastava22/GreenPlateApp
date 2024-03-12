@@ -2,6 +2,7 @@ package com.example.greenplate.model;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.UUID;
 
 public class User {
 
@@ -10,7 +11,7 @@ public class User {
     private String password;
 
     public User(String username, String password) {
-        this.id = "0";
+        this.id = generateRandomId();
         this.username = username;
         this.password = password;
     }
@@ -48,5 +49,10 @@ public class User {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = database.getReference("users");
         usersRef.child(id).setValue(this);
+    }
+
+    private String generateRandomId() {
+        // Generate a random UUID (Universally Unique Identifier)
+        return UUID.randomUUID().toString();
     }
 }
