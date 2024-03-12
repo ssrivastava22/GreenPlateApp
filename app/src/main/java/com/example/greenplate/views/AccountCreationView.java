@@ -51,10 +51,11 @@ public class AccountCreationView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                viewModel.setUser(new User(
+                /*viewModel.setUser(new User(
                         editTextUsername.getText().toString().trim(),
                         editTextPassword.getText().toString().trim()
-                ));
+                ));*/
+                viewModel.setUser(User.getInstance());
 
                 if (viewModel.isValidInput()) {
                     viewModel.createAccount();

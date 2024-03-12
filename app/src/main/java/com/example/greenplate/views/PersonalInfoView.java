@@ -29,7 +29,7 @@ public class PersonalInfoView extends AppCompatActivity implements BottomNavigat
     private Button enterUserInfoButton;
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference root = db.getReference().child("users");
+    private DatabaseReference root = db.getReference().child("Users");
     private PersonalInfoViewModel viewModel;
 
     @Override
@@ -103,9 +103,6 @@ public class PersonalInfoView extends AppCompatActivity implements BottomNavigat
             return true;
         } else if (id == R.id.ShoppingList) {
             startActivity(new Intent(PersonalInfoView.this, ShoppingListView.class));
-            return true;
-        } else if (id == R.id.PersonalInfo) {
-            //startActivity(new Intent(PersonalInfoView.this, PersonalInfoView.class));
             return true;
         }
         return false;

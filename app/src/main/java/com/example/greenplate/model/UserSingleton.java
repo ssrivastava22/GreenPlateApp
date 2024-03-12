@@ -1,16 +1,20 @@
 package com.example.greenplate.model;
 
 public class UserSingleton {
-    private static UserSingleton instance;
+    public static UserSingleton instance;
     private User user;
 
     private UserSingleton() {
         // Private constructor to prevent instantiation
     }
 
-    public static synchronized UserSingleton getInstance() {
+    public static UserSingleton getInstance() {
         if (instance == null) {
-            instance = new UserSingleton();
+            synchronized (UserSingleton.class) {
+                if (instance == null) {
+                    instance = new UserSingleton();
+                }
+            }
         }
         return instance;
     }

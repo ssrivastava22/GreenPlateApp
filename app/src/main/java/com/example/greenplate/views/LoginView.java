@@ -84,14 +84,18 @@ public class LoginView extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, show successful login message
+                            LoginViewModel loginViewModel = new LoginViewModel();
+                            //loginViewModel.createUserSingleton();
                             Toast.makeText(LoginView.this, "Account successfully created.",
                                     Toast.LENGTH_SHORT).show();
-                            LoginViewModel loginViewModel = new LoginViewModel();
-                            loginViewModel.createUserSingleton();
+
                         } else {
                             // If sign in fails, display a message to the user.
+                            LoginViewModel loginViewModel = new LoginViewModel();
+                            //loginViewModel.createUserSingleton();
                             Toast.makeText(LoginView.this, "Login failed.",
                                     Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });

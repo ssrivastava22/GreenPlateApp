@@ -10,7 +10,7 @@ import com.example.greenplate.model.UserSingleton;
 
 
 public class LoginViewModel extends BaseObservable {
-    private User user;
+    private User user = User.getInstance();
 
     private String successMessage = "Login successful";
     private String errorMessage = "Username or Password is not valid";
@@ -48,17 +48,27 @@ public class LoginViewModel extends BaseObservable {
     }
 
     public LoginViewModel() {
-        user = new User("", "");
+        //user = new User("", "");
+        //user = User.getInstance();
+        user.setUsername("");
+        user.setPassword("");
     }
 
-    public void createUserSingleton() {
+    /*public void createUserSingleton() {
         UserSingleton.getInstance().setUser(user);
-    }
+    }*/
 
     public void onLoginClicked() {
+        setUserUsername(user.getUsername()); // Set username
+        setUserPassword(user.getPassword());
+
         if (isInputDataValid()) {
+            //createUserSingleton();
+            User.getInstance();
             setToastMessage(successMessage);
         } else {
+            //createUserSingleton();
+            User.getInstance();
             setToastMessage(errorMessage);
         }
     }

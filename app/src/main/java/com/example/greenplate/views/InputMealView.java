@@ -40,6 +40,17 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
         enterMealButton = findViewById(R.id.InputMealButton);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        Button personalInfoButton = findViewById(R.id.personalInfoButton);
+
+        // Set onClick listener for the button
+        personalInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to the personal information screen
+                startActivity(new Intent(InputMealView.this, PersonalInfoView.class));
+            }
+        });
         enterMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,9 +102,6 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
             return true;
         } else if (id == R.id.ShoppingList) {
             startActivity(new Intent(InputMealView.this, ShoppingListView.class));
-            return true;
-        } else if (id == R.id.PersonalInfo) {
-            startActivity(new Intent(InputMealView.this, PersonalInfoView.class));
             return true;
         }
         return false;
