@@ -41,6 +41,9 @@ public class IngredientsView extends AppCompatActivity implements
         } else if (id == R.id.ShoppingList) {
             startActivity(new Intent(IngredientsView.this, ShoppingListView.class));
             return true;
+        } else if (id == R.id.PersonalInfo) {
+            startActivity(new Intent(IngredientsView.this, PersonalInfoView.class));
+            return true;
         }
         return false;
     }

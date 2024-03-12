@@ -37,6 +37,9 @@ public class RecipeView extends AppCompatActivity
         } else if (id == R.id.ShoppingList) {
             startActivity(new Intent(RecipeView.this, ShoppingListView.class));
             return true;
+        } else if (id == R.id.PersonalInfo) {
+            startActivity(new Intent(RecipeView.this, PersonalInfoView.class));
+            return true;
         }
         return false;
     }

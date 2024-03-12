@@ -1,24 +1,27 @@
 package com.example.greenplate.views;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.example.greenplate.R;
+import com.example.greenplate.viewmodels.InputMealViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.greenplate.viewmodels.InputMealViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
-import android.content.Intent;
-import android.view.MenuItem;
-public class InputMealView extends AppCompatActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener{
+import com.google.firebase.database.FirebaseDatabase;
+
+public class InputMealView extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
     private EditText editMealText;
     private EditText editCalorieText;
     private Button enterMealButton;
@@ -67,30 +70,32 @@ public class InputMealView extends AppCompatActivity implements
                     } catch (NumberFormatException e) {
                         Toast.makeText(InputMealView.this, "Invalid Calorie Input", Toast.LENGTH_SHORT).show();
                     }
-
-                    // will need to be updated once personal info screen gets created
-                    @Override
-                    public boolean onNavigationItemSelected (@NonNull MenuItem item){
-                        int id = item.getItemId();
-                        if (id == R.id.Home) {
-                            startActivity(new Intent(InputMealView.this, Home.class));
-                            return true;
-                        } else if (id == R.id.Recipe) {
-                            startActivity(new Intent(InputMealView.this, RecipeView.class));
-                            return true;
-                        } else if (id == R.id.InputMeal) {
-                            return true;
-                        } else if (id == R.id.Ingredients) {
-                            startActivity(new Intent(InputMealView.this, IngredientsView.class));
-                            return true;
-                        } else if (id == R.id.ShoppingList) {
-                            startActivity(new Intent(InputMealView.this, ShoppingListView.class));
-                            return true;
-                        }
-                    }
                 }
             }
         });
     }
-}
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.Home) {
+            startActivity(new Intent(InputMealView.this, Home.class));
+            return true;
+        } else if (id == R.id.Recipe) {
+            startActivity(new Intent(InputMealView.this, RecipeView.class));
+            return true;
+        } else if (id == R.id.InputMeal) {
+            return true;
+        } else if (id == R.id.Ingredients) {
+            startActivity(new Intent(InputMealView.this, IngredientsView.class));
+            return true;
+        } else if (id == R.id.ShoppingList) {
+            startActivity(new Intent(InputMealView.this, ShoppingListView.class));
+            return true;
+        } else if (id == R.id.PersonalInfo) {
+            startActivity(new Intent(InputMealView.this, PersonalInfoView.class));
+            return true;
+        }
+        return false;
+    }
+}

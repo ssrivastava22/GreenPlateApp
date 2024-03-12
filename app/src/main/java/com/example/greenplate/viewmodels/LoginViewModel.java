@@ -6,6 +6,7 @@ import android.util.Patterns;
 import android.text.TextUtils;
 import com.example.greenplate.BR;
 import com.example.greenplate.model.User;
+import com.example.greenplate.model.UserSingleton;
 
 
 public class LoginViewModel extends BaseObservable {
@@ -50,6 +51,10 @@ public class LoginViewModel extends BaseObservable {
         user = new User("", "");
     }
 
+    public void createUserSingleton() {
+        UserSingleton.getInstance().setUser(user);
+    }
+
     public void onLoginClicked() {
         if (isInputDataValid()) {
             setToastMessage(successMessage);
@@ -72,5 +77,7 @@ public class LoginViewModel extends BaseObservable {
 
         return password.length() >= 5;
     }
+
+
 
 }

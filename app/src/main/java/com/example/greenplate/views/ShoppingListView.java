@@ -37,6 +37,9 @@ public class ShoppingListView extends AppCompatActivity
             return true;
         } else if (id == R.id.ShoppingList) {
             return true;
+        } else if (id == R.id.PersonalInfo) {
+            startActivity(new Intent(ShoppingListView.this, PersonalInfoView.class));
+            return true;
         }
         return false;
     }
