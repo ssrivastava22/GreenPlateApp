@@ -162,21 +162,10 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
         visualizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("InputMealView", "Visualize button clicked"); // Add this line for logging
+                Log.d("InputMealView", "Visualize button clicked");
                 viewModel.fetchDailyCaloricIntake();
             }
         });
-
-        // viewModel.getDailyCaloricIntake().observe(this, new Observer<List<Integer>>() {
-        //     @Override
-        //     public void onChanged(List<Integer> dailyCaloricIntake) {
-        //         if (dailyCaloricIntake != null) {
-        //             createCaloricIntakeChart(dailyCaloricIntake);
-        //         } else {
-        //             Toast.makeText(InputMealView.this, "Failed to retrieve data", Toast.LENGTH_SHORT).show();
-        //         }
-        //     }
-        // });
 
         viewModel.getDailyCaloricIntake().observe(this, new Observer<List<Integer>>() {
             @Override
