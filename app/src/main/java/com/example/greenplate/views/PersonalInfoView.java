@@ -29,7 +29,7 @@ public class PersonalInfoView extends AppCompatActivity implements BottomNavigat
     private Button enterUserInfoButton;
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference root = db.getReference().child("Meals");
+    private DatabaseReference root = db.getReference().child("users");
     private PersonalInfoViewModel viewModel;
 
     @Override
