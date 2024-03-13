@@ -116,7 +116,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.charts.Cartesian;
@@ -139,7 +138,8 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
     private EditText editCalorieText;
     private Button enterMealButton;
     private EditText editDateText;
-    private Button visualizeButton;
+    private Button button1;
+    private Button button2;
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference root = db.getReference().child("Meals");
@@ -148,22 +148,30 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_meal);
+        setContentView(R.layout.activity_inputmeal);
         viewModel = new ViewModelProvider(this).get(InputMealViewModel.class);
         editMealText = findViewById(R.id.InputMealName);
         editCalorieText = findViewById(R.id.InputCalories);
         editDateText = findViewById(R.id.InputDate);
         enterMealButton = findViewById(R.id.InputMealButton);
-        visualizeButton = findViewById(R.id.visualizeButton);
+        button1 = findViewById(R.id.visualizeButton1);
+        button2 = findViewById(R.id.visualizeButton2);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        visualizeButton.setOnClickListener(new View.OnClickListener() {
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("InputMealView", "Visualize button clicked");
+                Log.d("InputMealView", "Visualize button 1clicked");
                 viewModel.fetchDailyCaloricIntake();
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("InputMealView", "Visualize button 2 clicked");
             }
         });
 
@@ -252,9 +260,9 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
         columnChart.title("Daily Caloric Intake Over Past Month");
         columnChart.xAxis(0).title("Day");
         columnChart.yAxis(0).title("Calories");
-        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-        anyChartView.setChart(columnChart);
+        //AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+        //anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+        //anyChartView.setChart(columnChart);
     }
 }
 
