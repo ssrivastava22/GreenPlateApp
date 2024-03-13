@@ -70,8 +70,7 @@ public class PersonalInfoView extends AppCompatActivity implements
                         newMealRef.child("Height").setValue(height);
                         newMealRef.child("Weight").setValue(weight);
                         newMealRef.child("Gender").setValue(gender);
-                        //newMealRef.child("Username").setValue(user.getUsername());
-                        newMealRef.child("Meals").setValue("")
+                        newMealRef.child("Meals").setValue(db.getReference())
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {

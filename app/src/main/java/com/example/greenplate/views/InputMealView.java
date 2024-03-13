@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.greenplate.R;
+import com.example.greenplate.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,9 +26,10 @@ public class InputMealView extends AppCompatActivity implements
     private EditText editDateText;
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference root = db.getReference().child("Meal");
+    private DatabaseReference root = db.getReference().child("Users");
     private InputMealViewModel viewModel;
-    private String mealKey;
+    private User user = User.getInstance();
+    private DatabaseReference root2 = db.getReference().child("Meals");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +60,15 @@ public class InputMealView extends AppCompatActivity implements
                 } else {
                     try {
                         int calorieValue = Integer.parseInt(calorieText);
-                        DatabaseReference newMealRef = root.push();
+                        String username = user.getUsername().replaceAll("\\.","");
+                        DatabaseReference newMealRef = root.child(username);
+                        newMealRef = newMealRef.child("meals");
                         newMealRef.child("Meal Name").setValue(mealName);
                         newMealRef.child("Date").setValue(date);
                         newMealRef.child("Calories").setValue(calorieValue)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        mealKey = newMealRef.getKey();
                                         Toast.makeText(InputMealView.this, "Meal saved", Toast.LENGTH_SHORT).show();
                                     }
                                 })
