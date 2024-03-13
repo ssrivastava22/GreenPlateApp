@@ -1,4 +1,5 @@
 package com.example.greenplate.views;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +13,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.greenplate.viewmodels.InputMealViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import android.content.Intent;
 import android.view.MenuItem;
-public class InputMealView extends AppCompatActivity implements
-        BottomNavigationView.OnNavigationItemSelectedListener{
+
+public class InputMealView extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private EditText editMealText;
     private EditText editCalorieText;
     private Button enterMealButton;
@@ -32,19 +32,23 @@ public class InputMealView extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_meal);
+
         viewModel = new ViewModelProvider(this).get(InputMealViewModel.class);
         editMealText = findViewById(R.id.InputMealName);
         editCalorieText = findViewById(R.id.InputCalories);
         editDateText = findViewById(R.id.InputDate);
         enterMealButton = findViewById(R.id.InputMealButton);
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
         enterMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String calorieText =editCalorieText.getText().toString();
+                String calorieText = editCalorieText.getText().toString();
                 String mealName = editMealText.getText().toString();
                 String date = editDateText.getText().toString();
+
                 if (mealName.isEmpty()) {
                     Toast.makeText(InputMealView.this, "The 'Meal Name' cannot be empty", Toast.LENGTH_SHORT).show();
                 } else if (calorieText.isEmpty()) {
@@ -53,7 +57,6 @@ public class InputMealView extends AppCompatActivity implements
                     Toast.makeText(InputMealView.this, "Date cannot be empty", Toast.LENGTH_SHORT).show();
                 } else if (date.length() != 10) {
                     Toast.makeText(InputMealView.this, "Date is in invalid format", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(InputMealView.this, "The 'Calories' field cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
                         int calorieValue = Integer.parseInt(calorieText);
@@ -76,8 +79,11 @@ public class InputMealView extends AppCompatActivity implements
                     } catch (NumberFormatException e) {
                         Toast.makeText(InputMealView.this, "Invalid Calorie Input", Toast.LENGTH_SHORT).show();
                     }
+                }
+            }
+        });
+    }
 
-    // will need to be updated once personal info screen gets created
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -88,6 +94,7 @@ public class InputMealView extends AppCompatActivity implements
             startActivity(new Intent(InputMealView.this, RecipeView.class));
             return true;
         } else if (id == R.id.InputMeal) {
+            // Current activity, no action needed
             return true;
         } else if (id == R.id.Ingredients) {
             startActivity(new Intent(InputMealView.this, IngredientsView.class));
@@ -96,4 +103,6 @@ public class InputMealView extends AppCompatActivity implements
             startActivity(new Intent(InputMealView.this, ShoppingListView.class));
             return true;
         }
+        return false;
     }
+}
