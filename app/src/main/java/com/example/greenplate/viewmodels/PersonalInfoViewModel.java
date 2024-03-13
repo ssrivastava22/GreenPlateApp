@@ -18,6 +18,7 @@ public class PersonalInfoViewModel extends ViewModel {
 
     public User userInfo;
     //public UserSingleton user1;
+    private FirebaseAuth mAuth;
 
     public PersonalInfoViewModel() {
         //userInfo = new User("0", "0", "");
@@ -81,6 +82,13 @@ public class PersonalInfoViewModel extends ViewModel {
             String username = curr.replaceAll("\\.", "");
             username = username.replaceAll("@", "");
             Log.d("Username: ", username);
+
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser != null) {
+                userRef = db.getReference().child("Users").child(currentUser.getUid());
+            }
+
             //userRef.child("Username").setValue(userInfo.getUsername());
             userRef.child(curr).setValue(userInfoMap);
             //userRef.child("Height").setValue(heightValue);

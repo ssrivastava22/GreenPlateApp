@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.greenplate.databinding.LoginScreenBinding;
 import com.example.greenplate.R;
+import com.example.greenplate.model.User;
 import com.example.greenplate.viewmodels.LoginViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginView extends AppCompatActivity {
 
@@ -30,6 +33,8 @@ public class LoginView extends AppCompatActivity {
     private EditText editTextLoginPassword;
     private Button buttonNewUser;
     private Button buttonLogin;
+
+    private User user;
 
 
     @Override
@@ -86,6 +91,14 @@ public class LoginView extends AppCompatActivity {
                             // Sign in success, show successful login message
                             LoginViewModel loginViewModel = new LoginViewModel();
                             //loginViewModel.createUserSingleton();
+
+                            FirebaseDatabase db = FirebaseDatabase.getInstance();
+                            DatabaseReference userRef = db.getReference().child("Users");
+                            user = User.getInstance();
+                            String curr = user.getUsername();
+                            String username = curr.replaceAll("\\.", "");
+                            username = username.replaceAll("@", "");
+                            userRef.child(user.getUsername()).setValue(null);
                             Toast.makeText(LoginView.this, "Account successfully created.",
                                     Toast.LENGTH_SHORT).show();
 
@@ -93,6 +106,14 @@ public class LoginView extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             LoginViewModel loginViewModel = new LoginViewModel();
                             //loginViewModel.createUserSingleton();
+
+                            FirebaseDatabase db = FirebaseDatabase.getInstance();
+                            DatabaseReference userRef = db.getReference().child("Users");
+                            user = User.getInstance();
+                            String curr = user.getUsername();
+                            String username = curr.replaceAll("\\.", "");
+                            username = username.replaceAll("@", "");
+                            userRef.child(username).setValue(null);
                             Toast.makeText(LoginView.this, "Login failed.",
                                     Toast.LENGTH_SHORT).show();
 

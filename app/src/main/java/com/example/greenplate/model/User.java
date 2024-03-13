@@ -23,13 +23,13 @@ public class User {
         this.password = password;
     }
 
-    private User(String height, String weight, String gender) {
+    /*private User(String height, String weight, String gender) {
         this.height = height;
         this.weight = weight;
         this.gender = gender;
         this.username = " ";
         this.password = " ";
-    }
+    }*/
     private User(String username, String password, String height, String weight, String gender) {
         this.height = height;
         this.weight = weight;
@@ -75,12 +75,12 @@ public class User {
         this.gender = gender;
     }
 
-    public void addUserToDatabase() {
+    /*public void addUserToDatabase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = database.getReference("Users");
         // Use the username as the key in the database
         usersRef.child(username).setValue(this);
-    }
+    }*/
 
     private User() {
         // Private constructor to prevent instantiation
