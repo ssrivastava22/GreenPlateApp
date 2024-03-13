@@ -61,11 +61,17 @@ public class PersonalInfoView extends AppCompatActivity implements
                 } else {
                     try {
                         //int calorieValue = Integer.parseInt(calorieText);
-                        DatabaseReference newMealRef = root.push();
+                        //DatabaseReference newMealRef = root.push();
+
+
+                        String username = user.getUsername().replaceAll("\\.","");
+                        DatabaseReference newMealRef = root.child(username);
+
                         newMealRef.child("Height").setValue(height);
                         newMealRef.child("Weight").setValue(weight);
                         newMealRef.child("Gender").setValue(gender);
-                        newMealRef.child("Meals").setValue("h")
+                        //newMealRef.child("Username").setValue(user.getUsername());
+                        newMealRef.child("Meals").setValue("")
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
