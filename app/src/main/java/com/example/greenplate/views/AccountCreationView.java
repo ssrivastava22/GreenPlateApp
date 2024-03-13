@@ -35,7 +35,7 @@ public class AccountCreationView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_account);
+        setContentView(R.layout.activity_create_account); //setting xml file
 
         viewModel = new ViewModelProvider(this).get(AccountCreationViewModel.class);
 
