@@ -41,15 +41,13 @@
                 android:layout_height="wrap_content"
                 android:hint="Input Date"
                 android:padding="16dp"
-                android:selectAllOnFocus="false"
-                android:text="@={loginViewModel.userPassword}" />
+                android:selectAllOnFocus="false" />
 
             <Button
                 android:id="@+id/InputMealButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:onClick="@{() -> loginViewModel.onLoginClicked()}"
                 android:text="Input Meal"
                 />
 
@@ -66,6 +64,8 @@
                 android:layout_height="wrap_content"
                 android:text="Visualization 2"
                 android:onClick="exitApp" />
+
+
 
         </LinearLayout>
     </ScrollView>
