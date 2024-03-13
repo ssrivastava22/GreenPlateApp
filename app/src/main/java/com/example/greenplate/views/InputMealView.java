@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.greenplate.R;
 import com.example.greenplate.model.InputMealModel;
+import com.example.greenplate.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,6 +48,8 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
     private TextView dailyCalorieIntakeTextView;
     private FirebaseAuth mAuth;
     private DatabaseReference userRef;
+    private DatabaseReference mealsRef;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +64,13 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
         dailyCalorieIntakeTextView = findViewById(R.id.dailyCalorieIntakeTextView);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(InputMealView.this);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        userRef = db.getReference().child("Users").child(currentUser.getUid());
+
+        //mAuth = FirebaseAuth.getInstance();
+        //FirebaseUser currentUser = mAuth.getCurrentUser();
+        String username = user.getUsername();
+
+        userRef = db.getReference().child("Users").child(username);
+        mealsRef = db.getReference().child("Users").child(username).child().child("Meals");
 
         enterMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,12 +129,12 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
 
                     userInfoTextView.setText("Gender: " + gender + ", Height: " + height + " cm, Weight: " + weight + " kg");
 
-                    double calorieGoal = calculateCalorieGoal(Gender, Height, Weight);
+                    double calorieGoal = calculateCalorieGoal(gender, height, weight);
                     calorieGoalTextView.setText("Calorie Goal: " + calorieGoal + " kcal");
                 } else {
                     //Default values
                     userInfoTextView.setText("John");
-                    calorieGoalTextView.setText("100");
+                    calorieGoalTextView.setText("1000");
                 }
             }
             @Override
@@ -154,7 +161,7 @@ public class InputMealView extends AppCompatActivity implements BottomNavigation
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDateStr = dateFormat.format(currentDate);
 
-        userRef.orderByChild("Date").equalTo(currentDateStr).addListenerForSingleValueEvent(new ValueEventListener() {
+        mealsRef.orderByChild("Date").equalTo(currentDateStr).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int totalCalories = 0;
