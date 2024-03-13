@@ -152,7 +152,7 @@ public class PersonalInfoView extends AppCompatActivity implements
             startActivity(new Intent(PersonalInfoView.this, ShoppingListView.class));
             return true;
         } else if (id == R.id.InputMeal) {
-            //startActivity(new Intent(PersonalInfoView.this, ShoppingListView.class));
+            startActivity(new Intent(PersonalInfoView.this, InputMealView.class));
             return true;
         }
         return false;

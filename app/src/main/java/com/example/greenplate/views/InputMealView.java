@@ -25,11 +25,25 @@ import android.content.Intent;
 import android.view.MenuItem;
 import com.example.greenplate.model.MealInfo;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.FirebaseDatabase;
+import java.util.ArrayList;
+import java.util.List;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import android.content.Intent;
+import android.view.MenuItem;
+import androidx.lifecycle.Observer;
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.charts.Cartesian;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.example.greenplate.viewmodels.InputMealViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class InputMealView extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener{
@@ -37,6 +51,9 @@ public class InputMealView extends AppCompatActivity implements
     private EditText editCalorieText;
     private Button enterMealButton;
     private EditText editDateText;
+
+    private Button button1;
+    private Button button2;
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference root = db.getReference().child("Meal");
@@ -55,26 +72,65 @@ public class InputMealView extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_meal);
+        setContentView(R.layout.activity_inputmeal);
         viewModel = new ViewModelProvider(this).get(InputMealViewModel.class);
         editMealText = findViewById(R.id.InputMealName);
         editCalorieText = findViewById(R.id.InputCalories);
         editDateText = findViewById(R.id.InputDate);
         enterMealButton = findViewById(R.id.InputMealButton);
+        button1 = findViewById(R.id.visualizeButton1);
+        button2 = findViewById(R.id.visualizeButton2);
         userInfoTextView = findViewById(R.id.userInfoTextView);
         calorieGoalTextView = findViewById(R.id.calorieGoalTextView);
         dailyCalorieIntakeTextView = findViewById(R.id.dailyCalorieIntakeTextView);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("InputMealView", "Visualize button clicked");
+                viewModel.fetchDailyCaloricIntake();
+            }
+        });
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("InputMealView", "Visualize button clicked");
+                viewModel.fetchDailyCaloricIntake();
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("InputMealView", "Visualize button 2 clicked");
+            }
+        });
+
+        viewModel.getDailyCaloricIntake().observe(this, new Observer<List<Integer>>() {
+            @Override
+            public void onChanged(List<Integer> dailyCaloricIntake) {
+                if (dailyCaloricIntake != null && !dailyCaloricIntake.isEmpty()) {
+                    Log.d("InputMealView", "Data received: " + dailyCaloricIntake.toString());
+                    createCaloricIntakeChart(dailyCaloricIntake);
+                } else {
+                    Log.d("InputMealView", "No data received or data is empty");
+                }
+            }
+        });
+        user = User.getInstance();
         String username = user.getUsername();
-        userRef = db.getReference().child("Users").child(username);
-        mealsRef = db.getReference().child("Users").child(username).child("Meals");
+        String sanitizedUsername = username.split("@")[0].replaceAll("[.#$\\[\\]]", "");
+        userRef = db.getReference().child("Users").child(sanitizedUsername);
+        mealsRef = db.getReference().child("Users").child(sanitizedUsername).child("Meals");
         enterMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String mealName = editMealText.getText().toString().trim();
-                final String calorieText = editCalorieText.getText().toString().trim();
-                final String date = editDateText.getText().toString().trim();
+                String mealName = editMealText.getText().toString().trim();
+                String calorieText = editCalorieText.getText().toString().trim();
+                String date = editDateText.getText().toString().trim();
 
                 if (mealName.isEmpty()) {
                     Toast.makeText(InputMealView.this, "Meal Name cannot be empty", Toast.LENGTH_SHORT).show();
@@ -91,7 +147,7 @@ public class InputMealView extends AppCompatActivity implements
                 }
 
                 // Get the current user's username
-                String username = User.getInstance().getUsername();
+                String username = user.getUsername();
                 if(username == null || username.isEmpty()) {
                     Toast.makeText(InputMealView.this, "User is not logged in", Toast.LENGTH_SHORT).show();
                     return;
@@ -129,8 +185,8 @@ public class InputMealView extends AppCompatActivity implements
                 }
             }
         });
-        retrieveUserInfoAndCalculateCalorieGoal();
-        calculateAndDisplayDailyCalorieIntake();
+        //retrieveUserInfoAndCalculateCalorieGoal();
+        //calculateAndDisplayDailyCalorieIntake();
 
     }
         public boolean onNavigationItemSelected (@NonNull MenuItem item){
@@ -215,4 +271,20 @@ public class InputMealView extends AppCompatActivity implements
         });
     }
 
+    private void createCaloricIntakeChart(List<Integer> dailyCaloricIntake) {
+        Cartesian columnChart = AnyChart.column();
+        List<DataEntry> data = new ArrayList<>();
+        for (int i = 0; i < dailyCaloricIntake.size(); i++) {
+            data.add(new ValueDataEntry("Day " + (i + 1), dailyCaloricIntake.get(i)));
+        }
+        columnChart.data(data);
+        columnChart.title("Daily Caloric Intake Over Past Month");
+        columnChart.xAxis(0).title("Day");
+        columnChart.yAxis(0).title("Calories");
+        //AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+        //anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+        //anyChartView.setChart(columnChart);
+    }
 }
+
+

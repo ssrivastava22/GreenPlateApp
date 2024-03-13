@@ -90,7 +90,7 @@ public class AccountCreationView extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(AccountCreationView.this, "Authentication failed.",
+                            Toast.makeText(AccountCreationView.this, "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
