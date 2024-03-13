@@ -66,6 +66,7 @@ public class InputMealView extends AppCompatActivity implements
                         newMealRef.child("Meal Name").setValue(mealName);
                         newMealRef.child("Date").setValue(date);
                         newMealRef.child("Calories").setValue(calorieValue)
+
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
