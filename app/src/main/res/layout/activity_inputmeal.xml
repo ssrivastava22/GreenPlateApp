@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="loginViewModel"
+            type="com.example.greenplate.viewmodels.LoginViewModel"/>
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/InputMealName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Enter Meal Name"
+                android:hint="Input Meal"
+                android:padding="16dp" />
+
+            <EditText
+                android:id="@+id/InputCalories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:hint="Input Calories"
+                android:selectAllOnFocus="false" />
+            <EditText
+                android:id="@+id/InputDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Input Date"
+                android:padding="16dp"
+                android:selectAllOnFocus="false"
+                android:text="@={loginViewModel.userPassword}" />
+
+            <Button
+                android:id="@+id/InputMealButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> loginViewModel.onLoginClicked()}"
+                android:text="Input Meal"
+                />
+
+            <Button
+                android:id="@+id/visualizeButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Visualization 1"
+                android:onClick="onCreateAccountClicked" />
+
+            <Button
+                android:id="@+id/visualizeButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Visualization 2"
+                android:onClick="exitApp" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

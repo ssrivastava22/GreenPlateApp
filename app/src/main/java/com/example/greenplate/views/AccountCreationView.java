@@ -86,16 +86,16 @@ public class AccountCreationView extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //If sign in is successful, show account created message
+                            // If sign in is successful, show account created message
                             Toast.makeText(AccountCreationView.this,
                                     "Account successfully created.", Toast.LENGTH_SHORT).show();
-
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(AccountCreationView.this, "Authentication failed.",
+                            Toast.makeText(AccountCreationView.this, "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
     }
 }
