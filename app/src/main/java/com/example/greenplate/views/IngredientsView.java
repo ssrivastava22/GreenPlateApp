@@ -46,9 +46,6 @@ public class IngredientsView extends AppCompatActivity implements
     private EditText expirationDateEditText;
     private Button submitButton;
 
-    //private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    //private DatabaseReference root = db.getReference().child("Pantry");
-    //private IngredientsViewModel viewModel;
     private User user = User.getInstance();
 
     private FirebaseDatabase db;
@@ -61,63 +58,12 @@ public class IngredientsView extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredients);
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-
-        Button personalInfoButton = findViewById(R.id.personalInfoButton);
-
-        viewModel = new ViewModelProvider(this).get(IngredientsViewModel.class);
-
-        ingredientNameEditText = findViewById(R.id.ingredient_name_edit_text);
-        quantityEditText = findViewById(R.id.quantity_edit_text);
-        caloriesEditText = findViewById(R.id.calories_edit_text);
-        expirationDateEditText = findViewById(R.id.expiration_date_edit_text);
-        submitButton = findViewById(R.id.submit_button);
-
-        // Set onClick listener for the button
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String ingredientName = ingredientNameEditText.getText().toString();
-                String quantity = quantityEditText.getText().toString();
-                String calories = caloriesEditText.getText().toString();
-                String expirationDate = expirationDateEditText.getText().toString();
-
-                // Navigate to the personal information screen
-                startActivity(new Intent(IngredientsView.this, IngredientsView.class));
-
-                /*if (viewModel.checkIngredientExists(ingredientName)) {
-                    Toast.makeText(IngredientsView.this,
-                            "Ingredient already exists in pantry.", Toast.LENGTH_SHORT).show();
-                } else if (Double.parseDouble(quantity) <= 0) {
-                    Toast.makeText(IngredientsView.this,
-                            "Quantity must be positive.", Toast.LENGTH_SHORT).show();
-                } else {
-                    addIngredientToPantry(ingredientName, quantity, calories, expirationDate);
-                }*/
-                /*viewModel.checkIngredientExists(ingredientName, exists -> {
-                    if (exists) {
-                        // This block is executed if the ingredient exists in the pantry
-                        Toast.makeText(IngredientsView.this, "Ingredient already exists in pantry.", Toast.LENGTH_SHORT).show();
-                    } else if (Double.parseDouble(quantity) <= 0) {
-                        // This block is executed if the quantity is less than or equal to 0
-                        Toast.makeText(IngredientsView.this, "Quantity must be positive.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // This block is executed if the ingredient does not exist and the quantity is positive
-                        addIngredientToPantry(ingredientName, quantity, calories, expirationDate);
-                    }
-                });
-            }
-        });*/
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients);
 
         initializeViews();
         setupRecyclerView();
-        //fetchIngredients();
         fetchIngredients(new IngredientFetchCallback() {
             @Override
             public void onIngredientsFetched(List<IngredientsModel> ingredients) {
@@ -192,36 +138,6 @@ public class IngredientsView extends AppCompatActivity implements
         void onError(String message);
     }
 
-    /*private void fetchIngredients() {
-        // Assuming you have a User or similar object with a method to retrieve the username
-        String username = User.getInstance().getUsername();
-        if (username != null && !username.isEmpty()) {
-            String sanitizedUsername = username.split("@")[0].replaceAll("[.#$\\[\\]]", "");
-            DatabaseReference userRef = root.child(sanitizedUsername);
-
-            userRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ingredientList.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        //String ingredientStr = snapshot.getKey();
-                        //String quantityStr = snapshot.child("quantity").getValue(String.class);
-                        //String caloriesStr = snapshot.child("calories").getValue(String.class);
-                       // String expirationDateStr = snapshot.child("expirationDate").getValue(String.class);
-                        //ingredientList.add(new IngredientsModel(ingredientStr, quantityStr, caloriesStr, expirationDateStr));
-                        ingredientList.add(new IngredientsModel());
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(IngredientsView.this, "Failed to load ingredients.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }*/
-
     private void fetchIngredients(IngredientFetchCallback callback) {
         String username = User.getInstance().getUsername();
         if (username != null && !username.isEmpty()) {
@@ -240,18 +156,15 @@ public class IngredientsView extends AppCompatActivity implements
                         if (quantityObj instanceof Long || quantityObj instanceof Integer) {
                             quantityStr = String.valueOf(quantityObj);
                         } else if (quantityObj instanceof String) {
-                            // Here, you can directly use the string or attempt to parse it as a long if necessary
                             quantityStr = (String) quantityObj;
                             try {
                                 long quantityLong = Long.parseLong(quantityStr);
-                                // If parsing is successful but you still need it as a string
                                 quantityStr = String.valueOf(quantityLong);
                             } catch (NumberFormatException e) {
-                                // Handle the case where the string cannot be parsed to a long
-                                quantityStr = "Invalid Format"; // Adjust based on how you want to handle this
+                                quantityStr = "Invalid Format";
                             }
                         } else {
-                            quantityStr = "Unknown Quantity"; // Adjust accordingly
+                            quantityStr = "Unknown Quantity";
                         }
 
 
@@ -281,14 +194,10 @@ public class IngredientsView extends AppCompatActivity implements
 
 
     public void addIngredientToPantry(String ingredientName, String quantity, String calories, String expirationDate) {
-        // Retrieve the username (email) from the User singleton instance
         String username = user.getUsername();
         if (username != null && !username.isEmpty()) {
-            // Use only the part before the '@' symbol in the email as the key
-            // and remove any periods or other illegal characters
             String sanitizedUsername = username.split("@")[0].replaceAll("[.#$\\[\\]]", "");
 
-            // Use the sanitized username to create a reference in your database
             DatabaseReference userRef = root.child(sanitizedUsername);
             DatabaseReference ingredientRef = userRef.child(ingredientName);
 
