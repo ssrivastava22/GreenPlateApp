@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.greenplate.R;
 import com.example.greenplate.model.IngredientsModel;
+import com.example.greenplate.model.ShoppingListAdapter;
+import com.example.greenplate.model.ShoppingListModel;
 import com.example.greenplate.model.User;
 import com.example.greenplate.viewmodels.ShoppingListViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,6 +51,7 @@ public class ShoppingListView extends AppCompatActivity
     private RecyclerView recyclerView;
     private IngredientsAdapter adapter;
     private ArrayList<IngredientsModel> ingredientList = new ArrayList<>();
+    private ArrayList<ShoppingListModel> shoppingList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,7 +255,7 @@ public class ShoppingListView extends AppCompatActivity
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.shopping_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new IngredientsAdapter(ingredientList, root);
+        adapter = new ShoppingListAdapter(shoppingList, root);
         recyclerView.setAdapter(adapter);
     }
 

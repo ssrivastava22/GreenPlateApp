@@ -17,13 +17,15 @@ import java.util.Map;
 public class ShoppingListModel {
     private String shoppingItemName;
     private int quantity;
+    private boolean isChecked;
 
     public ShoppingListModel() {
 
     }
-    public ShoppingListModel(String shoppingItemName, int quantity) {
+    public ShoppingListModel(String shoppingItemName, int quantity, boolean isChecked) {
         this.shoppingItemName = shoppingItemName;
         this.quantity = quantity;
+        this.isChecked = isChecked;
     }
     public String getShoppingItemName() {
         return shoppingItemName;
@@ -33,12 +35,21 @@ public class ShoppingListModel {
         this.shoppingItemName = shoppingItemName;
     }
 
+
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean isChecked) {
+        this.isChecked = isChecked;
     }
 
 }
