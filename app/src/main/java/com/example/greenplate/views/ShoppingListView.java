@@ -49,8 +49,9 @@ public class ShoppingListView extends AppCompatActivity
 
     private DatabaseReference root;
     private RecyclerView recyclerView;
-    private IngredientsAdapter adapter;
-    private ArrayList<IngredientsModel> ingredientList = new ArrayList<>();
+    private ShoppingListAdapter adapter;
+
+
     private ArrayList<ShoppingListModel> shoppingList = new ArrayList<>();
 
     @Override
@@ -61,11 +62,11 @@ public class ShoppingListView extends AppCompatActivity
         initializeViews();
         setupRecyclerView();
         //fetchIngredients();
-        fetchIngredients(new ShoppingListView.IngredientFetchCallback() {
+        fetchIngredients(new ShoppingListView.ShoppingListFetchCallback() {
             @Override
-            public void onIngredientsFetched(List<IngredientsModel> ingredients) {
-                ingredientList.clear();
-                ingredientList.addAll(ingredients);
+            public void onShoppingListIngredientsFetched(List<ShoppingListModel> ingredients) {
+                shoppingList.clear();
+                shoppingList.addAll(ingredients);
                 adapter.notifyDataSetChanged();
             }
 
@@ -76,7 +77,7 @@ public class ShoppingListView extends AppCompatActivity
         });
     }
 
-    private void fetchIngredients(ShoppingListView.IngredientFetchCallback callback) {
+    private void fetchIngredients(ShoppingListView.ShoppingListFetchCallback callback) {
         String username = User.getInstance().getUsername();
         if (username != null && !username.isEmpty()) {
             String sanitizedUsername = username.split("@")[0].replaceAll("[.#$\\[\\]]", "");
@@ -85,7 +86,7 @@ public class ShoppingListView extends AppCompatActivity
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    List<IngredientsModel> fetchedIngredients = new ArrayList<>();
+                    List<ShoppingListModel> fetchedIngredients = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         //IngredientsModel ingredient = snapshot.getValue(IngredientsModel.class);
                         String ingredientStr = snapshot.getKey();
@@ -119,7 +120,7 @@ public class ShoppingListView extends AppCompatActivity
                             fetchedIngredients.add(ingredient);
                         }
                     }
-                    callback.onIngredientsFetched(fetchedIngredients);
+                    callback.onShoppingListFetched(fetchedIngredients);
                 }
 
                 @Override
@@ -255,12 +256,14 @@ public class ShoppingListView extends AppCompatActivity
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.shopping_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
         adapter = new ShoppingListAdapter(shoppingList, root);
         recyclerView.setAdapter(adapter);
     }
 
-    public interface IngredientFetchCallback {
-        void onIngredientsFetched(List<IngredientsModel> ingredients);
+    public interface ShoppingListFetchCallback {
+        void onShoppingListFetched(List<ShoppingListModel> ingredients);
         void onError(String message);
     }
 }

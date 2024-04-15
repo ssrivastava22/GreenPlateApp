@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.greenplate.R;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,12 +20,13 @@ import java.util.Map;
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.MyViewHolder> {
 
     private ArrayList<ShoppingListModel> shoppingList;
-    private OnShoppingClickListener onShoppingClickListener;
+    private DatabaseReference shoppingListRef;
+
 
     public ShoppingListAdapter(ArrayList<ShoppingListModel> list,
-                               OnShoppingClickListener listener) {
+                               DatabaseReference shoppingListRef) {
         shoppingList = list;
-        this.onShoppingClickListener = listener;
+        this.shoppingListRef = shoppingListRef;
     }
 
     @NonNull
@@ -65,7 +67,5 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         }
     }
 
-    public interface OnShoppingClickListener {
-        void onShoppingClick(ShoppingListModel shoppingListModel);
-    }
+
 }
