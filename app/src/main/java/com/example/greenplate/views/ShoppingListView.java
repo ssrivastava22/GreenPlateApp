@@ -191,14 +191,14 @@ public class ShoppingListView extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        /* viewModel.checkIngredientExists(ingredientName, exists -> {
+        viewModel.checkIngredientExists(ingredientName, exists -> {
             if (exists) {
                 Toast.makeText(ShoppingListView.this,
                         "Ingredient already exists in shopping list.", Toast.LENGTH_SHORT).show();
             } else {
                 addIngredientToShoppingList(ingredientName, quantity, calories, expirationDate);
             }
-        }); */
+        });
     }
 
     @Override
@@ -301,48 +301,7 @@ public class ShoppingListView extends AppCompatActivity
         }
     }
 
-    /* public void addIngredientToShoppingList(String ingredientName, String quantity, String calories,
-                                      String expirationDate) {
-        // Retrieve the username (email) from the User singleton instance
-        String username = user.getUsername();
-        if (username != null && !username.isEmpty()) {
-            // Use only the part before the '@' symbol in the email as the key
-            // and remove any periods or other illegal characters
-            String sanitizedUsername = username.split("@")[0].replaceAll("[.#$\\[\\]]",
-                    "");
 
-            // Use the sanitized username to create a reference in your database
-            DatabaseReference userRef = root.child(sanitizedUsername);
-            DatabaseReference ingredientRef = userRef.child(ingredientName);
-
-            Map<String, Object> ingredientData = new HashMap<>();
-            ingredientData.put("quantity", quantity);
-            ingredientData.put("calories", calories);
-            ingredientData.put("expirationDate", expirationDate);
-
-            ingredientRef.setValue(ingredientData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(ShoppingListView.this,
-                                    "Ingredient added to Shopping List.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ShoppingListView.this,
-                                    "Failed to add ingredient to shopping list: "
-                                            + e.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else {
-            Toast.makeText(ShoppingListView.this,
-                    "Username not set", Toast.LENGTH_SHORT).show();
-        }
-    } */
 
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.shopping_list);
