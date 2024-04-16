@@ -1,7 +1,5 @@
 package com.example.greenplate.views;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.greenplate.R;
 import com.example.greenplate.model.ShoppingListModel;
-import com.example.greenplate.R;
-import com.example.greenplate.model.IngredientsModel;
 import com.example.greenplate.model.User;
 import com.google.firebase.database.DatabaseReference;
 
@@ -81,7 +77,11 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             quantityTextView = itemView.findViewById(R.id.SLQuantityTextView);
             increaseButton = itemView.findViewById(R.id.SLIncreaseButton);
             decreaseButton = itemView.findViewById(R.id.SLDecreaseButton);
+
+
         }
+
+
 
         public void bind(ShoppingListModel item) {
             itemNameTextView.setText(item.getShoppingItemName());
@@ -89,6 +89,31 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             increaseButton.setOnClickListener(v -> adjustIngredientQuantity(item, true));
             decreaseButton.setOnClickListener(v -> adjustIngredientQuantity(item, false));
+
+        }
+
+
+        public void onBindViewHolder(@NonNull ShoppingListViewHolder holder, int position) {
+            ShoppingListModel shoppingListItem = shoppingList.get(position);
+
+            // Set the checkbox state based on your model
+            holder.itemNameTextView.setChecked(shoppingListItem.isChecked());
+
+            // Optionally handle further changes
+            holder.itemNameTextView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // Update your model based on the change
+                shoppingListItem.setChecked(isChecked);
+            });
+        }
+
+        public List<ShoppingListModel> getSelectedItems() {
+            List<ShoppingListModel> selectedItems = new ArrayList<>();
+            for (ShoppingListModel item : shoppingList) {
+                if (item.isChecked()) {
+                    selectedItems.add(item);
+                }
+            }
+            return selectedItems;
         }
 
         private DatabaseReference userRef;

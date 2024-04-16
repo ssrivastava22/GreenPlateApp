@@ -18,6 +18,8 @@ public class ShoppingListModel {
     private String shoppingItemName;
     private String quantity;
 
+    private boolean isChecked;
+
     public ShoppingListModel() {
 
     }
@@ -31,6 +33,13 @@ public class ShoppingListModel {
 
     public void setShoppingItemName(String shoppingItemName) {
         this.shoppingItemName = shoppingItemName;
+    }
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.isChecked = checked;
     }
 
     public String getQuantity() {
