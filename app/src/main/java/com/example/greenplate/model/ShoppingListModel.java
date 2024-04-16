@@ -27,6 +27,10 @@ public class ShoppingListModel {
         this.quantity = quantity;
         this.isChecked = isChecked;
     }
+
+    public ShoppingListModel(String ingredientStr, String quantityStr, String caloriesStr, String expirationDateStr) {
+    }
+
     public String getShoppingItemName() {
         return shoppingItemName;
     }

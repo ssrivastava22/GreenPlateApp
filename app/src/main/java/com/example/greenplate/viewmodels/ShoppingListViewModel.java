@@ -50,7 +50,7 @@ public class ShoppingListViewModel extends ViewModel {
         }
     }
 
-    public void checkIngredientExists(String ingredientName, IngredientsViewModel.IngredientCheckCallback callback) {
+    public void checkIngredientExists(String ingredientName, ShoppingListViewModel.IngredientCheckCallback callback) {
         // Retrieve the username (email) from the User singleton instance
         String username = userInfo.getUsername();
 

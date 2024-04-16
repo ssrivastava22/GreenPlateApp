@@ -64,7 +64,7 @@ public class ShoppingListView extends AppCompatActivity
         //fetchIngredients();
         fetchIngredients(new ShoppingListView.ShoppingListFetchCallback() {
             @Override
-            public void onShoppingListIngredientsFetched(List<ShoppingListModel> ingredients) {
+            public void onShoppingListFetched(List<ShoppingListModel> ingredients) {
                 shoppingList.clear();
                 shoppingList.addAll(ingredients);
                 adapter.notifyDataSetChanged();
@@ -88,7 +88,7 @@ public class ShoppingListView extends AppCompatActivity
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     List<ShoppingListModel> fetchedIngredients = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        //IngredientsModel ingredient = snapshot.getValue(IngredientsModel.class);
+
                         String ingredientStr = snapshot.getKey();
                         String quantityStr;
                         Object quantityObj = snapshot.child("quantity").getValue();
@@ -114,7 +114,7 @@ public class ShoppingListView extends AppCompatActivity
                         String caloriesStr = snapshot.child("calories").getValue(String.class);
                         String expirationDateStr = snapshot.child("expirationDate")
                                 .getValue(String.class);
-                        IngredientsModel ingredient = new IngredientsModel(ingredientStr,
+                        ShoppingListModel ingredient = new ShoppingListModel(ingredientStr,
                                 quantityStr, caloriesStr, expirationDateStr);
                         if (ingredient != null) {
                             fetchedIngredients.add(ingredient);
@@ -125,7 +125,7 @@ public class ShoppingListView extends AppCompatActivity
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    callback.onError("Failed to load ingredients.");
+                    callback.onError("Failed to load shopping list.");
                 }
             });
         } else {
@@ -168,6 +168,18 @@ public class ShoppingListView extends AppCompatActivity
             return;
         }
         try {
+            double caloriesValue = Double.parseDouble(calories);
+            if (caloriesValue <= 0) {
+                Toast.makeText(ShoppingListView.this, "Quantity must be positive.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(ShoppingListView.this, "Invalid number of calories entered.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
             double quantityValue = Double.parseDouble(quantity);
             if (quantityValue <= 0) {
                 Toast.makeText(ShoppingListView.this, "Quantity must be positive.",
@@ -184,7 +196,7 @@ public class ShoppingListView extends AppCompatActivity
                 Toast.makeText(ShoppingListView.this,
                         "Ingredient already exists in shopping list.", Toast.LENGTH_SHORT).show();
             } else {
-                addIngredientToPantry(ingredientName, quantity, calories, expirationDate);
+                addIngredientToShoppingList(ingredientName, quantity, calories, expirationDate);
             }
         });
     }
@@ -210,7 +222,86 @@ public class ShoppingListView extends AppCompatActivity
         return false;
     }
 
-    public void addIngredientToPantry(String ingredientName, String quantity, String calories,
+    public void addIngredientToShoppingList(String ingredientName, String quantity, String calories,
+                                      String expirationDate) {
+        // Retrieve the username (email) from the User singleton instance
+        String username = user.getUsername();
+        if (username != null && !username.isEmpty()) {
+            // Use only the part before the '@' symbol in the email as the key
+            // and remove any periods or other illegal characters
+            String sanitizedUsername = username.split("@")[0].replaceAll("[.#$\\[\\]]",
+                    "");
+
+            // Use the sanitized username to create a reference in your database
+            DatabaseReference userRef = root.child(sanitizedUsername);
+            DatabaseReference ingredientRef = userRef.child(ingredientName);
+
+            Map<String, Object> ingredientData = new HashMap<>();
+            ingredientData.put("quantity", quantity);
+            ingredientData.put("calories", calories);
+            ingredientData.put("expirationDate", expirationDate);
+
+            // Check if the ingredient already exists
+            ingredientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Ingredient exists, update its values
+                        ingredientRef.updateChildren(ingredientData)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(ShoppingListView.this,
+                                                "Ingredient updated in Shopping List.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(ShoppingListView.this,
+                                                "Failed to update ingredient in shopping list: "
+                                                        + e.getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        // Ingredient doesn't exist, add it as a new entry
+                        ingredientRef.setValue(ingredientData)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(ShoppingListView.this,
+                                                "Ingredient added to Shopping List.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(ShoppingListView.this,
+                                                "Failed to add ingredient to shopping list: "
+                                                        + e.getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(ShoppingListView.this,
+                            "Failed to check ingredient existence: " + error.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(ShoppingListView.this,
+                    "Username not set", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /* public void addIngredientToShoppingList(String ingredientName, String quantity, String calories,
                                       String expirationDate) {
         // Retrieve the username (email) from the User singleton instance
         String username = user.getUsername();
@@ -251,7 +342,7 @@ public class ShoppingListView extends AppCompatActivity
             Toast.makeText(ShoppingListView.this,
                     "Username not set", Toast.LENGTH_SHORT).show();
         }
-    }
+    } */
 
     private void setupRecyclerView() {
         recyclerView = findViewById(R.id.shopping_list);
