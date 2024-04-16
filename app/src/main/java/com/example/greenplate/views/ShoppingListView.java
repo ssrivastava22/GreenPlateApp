@@ -191,14 +191,14 @@ public class ShoppingListView extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        viewModel.checkIngredientExists(ingredientName, exists -> {
+        /* viewModel.checkIngredientExists(ingredientName, exists -> {
             if (exists) {
                 Toast.makeText(ShoppingListView.this,
                         "Ingredient already exists in shopping list.", Toast.LENGTH_SHORT).show();
             } else {
                 addIngredientToShoppingList(ingredientName, quantity, calories, expirationDate);
             }
-        });
+        }); */
     }
 
     @Override
